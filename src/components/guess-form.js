@@ -1,15 +1,16 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {setGuesses} from '../actions';
 
 import './guess-form.css';
 
-export default class GuessForm extends React.Component {
+export class GuessForm extends React.Component {
   onSubmit(event) {
     event.preventDefault();
+    const value = this.input.value;
 
-    if (this.props.onMakeGuess) {
-      const value = this.input.value;
-      this.props.onMakeGuess(value);
-    }
+    this.props.dispatch(setGuesses(value));
+
     this.input.value = '';
     this.input.focus();
   }
@@ -26,7 +27,7 @@ export default class GuessForm extends React.Component {
           max="100"
           autoComplete="off"
           aria-labelledby="feedback"
-          ref={input => (this.input = input)}
+          ref={input => (this.input = input)}   //need to use stateful component when uses ref?
           required
         />
         <button 
@@ -41,3 +42,5 @@ export default class GuessForm extends React.Component {
     );
   }
 }
+
+export default connect()(GuessForm);
